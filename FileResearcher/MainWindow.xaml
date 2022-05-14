@@ -1,0 +1,44 @@
+﻿<Window xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"  x:Class="FileResearcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FileResearcher"
+        xmlns:blocks="clr-namespace:FileResearcher.Blocks"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="566" Width="1082" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBarPanel Grid.Row="0">
+            <Button x:Name="modelButton" Height="20" Width="160" HorizontalAlignment="Left" Content="Model" Click="modelButton_Click"/>
+        </ToolBarPanel>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal" FlowDirection="LeftToRight">
+            <TreeView Width="260"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <ListView x:Name="DataTypeView" Width="240" MouseDoubleClick="DataTypeView_MouseDoubleClick">
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type blocks:DataType}">
+                            <Label Content="{Binding Name}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button Grid.Row="1" Content="Add" FontSize="20"/>
+            </Grid>
+            <Grid x:Name="byteStack" Width="300">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="73*"/>
+                    <RowDefinition Height="52*"/>
+                    <RowDefinition Height="290*"/>
+                </Grid.RowDefinitions>
+            </Grid>
+            <ScrollBar x:Name="byteScrollbar" Width="10" SmallChange="1" Maximum="2"/>
+        </StackPanel>
+    </Grid>
+</Window>
