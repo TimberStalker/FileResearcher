@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileResearcher.Blocks.Types;
+namespace FileReading.Trees;
 
-public class ArrayDataValue
+public class ReadTree : ReadTreeSection
 {
+    public ReadTree() : base()
+    {
 
+    }
 }

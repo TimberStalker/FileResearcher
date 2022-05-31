@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FileResearcher.Controls
+namespace FileReading.Controls
 {
     /// <summary>
     /// Interaction logic for AcceptableTextBox.xaml

@@ -1,4 +1,4 @@
-﻿using FileResearcher.Blocks;
+﻿using FileReading.Blocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace FileResearcher.Windows
+namespace FileReading.Windows
 {
     public partial class DesignTypeWindow : Window
     {

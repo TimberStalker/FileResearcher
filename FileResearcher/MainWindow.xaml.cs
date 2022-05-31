@@ -1,6 +1,5 @@
-﻿using FileResearcher.Blocks.Types;
-using FileResearcher.Utils;
-using FileResearcher.Windows;
+﻿using FileReading.Windows;
+using System.IO;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FileResearcher
+namespace FileReading
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -26,10 +25,11 @@ namespace FileResearcher
     public partial class MainWindow : Window
     {
         byte[]? bytes;
-        ResourcePool<string, DataType> types;
+        DynamicDictionary<string, DataType> types;
+
         public MainWindow()
         {
-            types = new ResourcePool<string, DataType>();
+            types = new DynamicDictionary<string, DataType>();
 
             InitializeComponent();
 

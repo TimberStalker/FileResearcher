@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace FileReading.Utils;
 
-public class SharedResource<TValue>
+public class SharedResource<TValue> : IDisposable
 {
     TValue value;
+    bool isStale;
     public event Action<TValue, TValue>? OnValueChanged; 
+
+    public bool IsStale => isStale;
     public virtual TValue Value
     {
         get => value;
@@ -22,5 +25,10 @@ public class SharedResource<TValue>
     public SharedResource(TValue value)
     {
         this.value = value;
+    }
+
+    public void Dispose()
+    {
+        isStale = true;
     }
 }
