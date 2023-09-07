@@ -1,0 +1,61 @@
+﻿<Window xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        x:Class="FileResearcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FileResearcher"
+        xmlns:vm="clr-namespace:FileResearcher.ViewModels"
+        xmlns:resources="clr-namespace:FileResearcher.Resources"
+        xmlns:debug="clr-namespace:FileResearcher.ViewModels.DebugModels"
+        xmlns:ctrls="clr-namespace:FileResearcher.Controls"
+        d:DataContext="{d:DesignInstance Type=debug:DebugMainWindowViewModel,IsDesignTimeCreatable=True}"
+        mc:Ignorable="d"
+        FontFamily="Cascadia Mono"
+        Title="MainWindow" Height="1080" Width="1920" ResizeMode="CanResize" IsManipulationEnabled="True">
+    <Window.Resources>
+        <resources:ColorToBrushConverter x:Key="colorConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:MainWindowViewModel x:Name="ViewModel"/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ToolBarPanel Grid.Row="0" Grid.ColumnSpan="8" Orientation="Horizontal">
+            <Button x:Name="modelButton" Height="20" Width="160" HorizontalAlignment="Left" Command="{Binding SetBytesFromFileCommand}" Content="Model"/>
+            <Button x:Name="readButton" Height="20" Width="160" HorizontalAlignment="Left" Command="{Binding ReadBytesWithTree}" Content="Read"/>
+        </ToolBarPanel>
+        <ctrls:NodeInspector Grid.Row="1" Grid.Column="0" CurrentNode="{Binding SelectedItem, ElementName=ReadTree, NotifyOnSourceUpdated=True}"/>
+        <GridSplitter Grid.Column="1" Grid.Row="1" Width="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+        <ctrls:ReadTree Grid.Row="1" Grid.Column="2" x:Name="ReadTree" TreeRoot="{Binding ReadTree}" Focusable="True"/>
+        <GridSplitter Grid.Column="3" Grid.Row="1" Width="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+        <Grid HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="4">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <ctrls:TypeList DataTypes="{Binding DataTypes}">
+            </ctrls:TypeList>
+            <Button Grid.Row="1" Content="Add" FontSize="20"/>
+        <GridSplitter Grid.Column="1"/>
+        </Grid>
+        <GridSplitter Grid.Column="5" Grid.Row="1" Width="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+        <ctrls:DataValueTree Grid.Column="6" Grid.Row="1" Values="{Binding DataValues}"/>
+        <GridSplitter Grid.Column="7" Grid.Row="1" Width="2" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+        <ctrls:ByteViewer Grid.Column="8" Grid.Row="1" DataValues="{Binding FlattenedValues}" Bytes="{Binding Bytes}"/>
+    </Grid>
+</Window>

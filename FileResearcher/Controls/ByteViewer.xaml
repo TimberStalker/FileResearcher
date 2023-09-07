@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="FileResearcher.Controls.ByteViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FileResearcher.Controls"
+             xmlns:debug="clr-namespace:FileResearcher.Controls.DebugModels"
+             xmlns:resources="clr-namespace:FileResearcher.Resources"
+             xmlns:tree="clr-namespace:FileReading.FileTree;assembly=FileReading"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=debug:ByteViewerDebugModel,IsDesignTimeCreatable=True}"
+             d:DesignHeight="755" d:DesignWidth="622"
+             x:Name="uc" FontFamily="Cascadia Mono">
+    <UserControl.Resources>
+        <resources:BytesToChunksConverter x:Key="chunkConverter"/>
+        <resources:BytesToTextConverter x:Key="byteConverter"/>
+    </UserControl.Resources>
+    <Grid Background="White" d:DataContext="{Binding .}" MouseMove="Grid_MouseMove" DataContext="{Binding .,ElementName=uc}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="20px"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20px"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ScrollBar x:Name="mainScroll" Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Maximum="{Binding Offsets.Length}" SmallChange="1" LargeChange="5" Scroll="scrollViews">
+
+        </ScrollBar>
+        <UniformGrid Columns="16" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Label Content="00" Grid.Column="0" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="01" Grid.Column="1" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="02" Grid.Column="2" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="03" Grid.Column="3" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="04" Grid.Column="4" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="05" Grid.Column="5" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="06" Grid.Column="6" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="07" Grid.Column="7" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="08" Grid.Column="8" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="09" Grid.Column="9" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="0A" Grid.Column="10" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="0B" Grid.Column="11" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="0C" Grid.Column="12" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="0D" Grid.Column="13" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="0E" Grid.Column="14" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+            <Label Content="0F" Grid.Column="15" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Stretch" VerticalContentAlignment="Center"/>
+        </UniformGrid>
+        <ListView x:Name="offsetView" Grid.Row="1" ItemsSource="{Binding Offsets}" IsHitTestVisible="False" Padding="4, 0" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" BorderThickness="0" VerticalAlignment="Top">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding .}" ContentStringFormat="X10" Padding="0" Margin="0" HorizontalContentAlignment="Center"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsEnabled" Value="false">
+                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+        <ListView x:Name="textView" BorderThickness="0" Grid.Row="1" Grid.Column="2" IsHitTestVisible="False" LayoutUpdated="textView_LayoutUpdated" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" VirtualizingPanel.IsVirtualizing="True" ItemsSource="{Binding Bytes, Converter={StaticResource chunkConverter}, Mode=OneWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding ., Converter={StaticResource byteConverter}}" Padding="0" Margin="0"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsEnabled" Value="false">
+                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView >
+    </Grid>
+</UserControl>

@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="FileResearcher.Controls.TypeList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FileResearcher.Controls"
+             xmlns:debug="clr-namespace:FileResearcher.Controls.DebugModels"
+             xmlns:resources="clr-namespace:FileResearcher.Resources"
+             xmlns:tree="clr-namespace:FileReading.FileTree;assembly=FileReading"
+             xmlns:data="clr-namespace:FileReading.ReadingData.Types;assembly=FileReading"
+             d:DataContext="{d:DesignInstance Type=debug:TypeListDebugModel, IsDesignTimeCreatable=True}"
+             mc:Ignorable="d" 
+             d:DesignHeight="650" d:DesignWidth="400"
+             x:Name="uc">
+    <UserControl.Resources>
+        <resources:DataTypeTemplateSelector x:Key="typeTemplateSelector"/>
+        <resources:ColorToBrushConverter x:Key="colorConverter"/>
+
+        <DataTemplate x:Key="Default">
+            <local:NodeDragWrapper CreateNodeArgs="{Binding .}" AllowDrop="False"
+                                   AdornerChild="{Binding ., RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                   CreateDraggedNode="{Binding CreateDragNode, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                <DockPanel>
+                    <Rectangle VerticalAlignment="Stretch" Width="10px" Fill="{Binding Color, Converter={StaticResource colorConverter}}"/>
+                    <Label Content="{Binding Name}"/>
+                </DockPanel>
+            </local:NodeDragWrapper>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="Custom">
+            <local:NodeDragWrapper CreateNodeArgs="{Binding .}" AllowDrop="False"
+                                   AdornerChild="{Binding ., RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                   CreateDraggedNode="{Binding CreateDragNode, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                <DockPanel>
+                    <Rectangle VerticalAlignment="Stretch" Width="10px" Fill="{Binding Color, Converter={StaticResource colorConverter}}"/>
+                    <Label Content="{Binding Name}"/>
+                    <Label Content="(edit)"/>
+                </DockPanel>
+            </local:NodeDragWrapper>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <ListView d:ItemsSource="{Binding DataTypes}" ItemTemplateSelector="{StaticResource typeTemplateSelector}" ItemsSource="{Binding DataTypes,ElementName=uc}">
+        </ListView>
+    </Grid>
+</UserControl>
