@@ -18,8 +18,8 @@ public class ReadTreeNode
 
     public IByteReader? Reader { get; set; }
 
-    IDataValue? internalDataValue;
-    public Func<IDataValue> ValueProvider => () => internalDataValue ?? new NullDataValue();
+
+    IDataValueProvider<ReadTreeNode>? DataValueProvider { get; set; }
 
     public ReadTreeNode()
     {
@@ -46,7 +46,7 @@ public class ReadTreeNode
         {
             Name = Name
         };
-        internalDataValue = dataValue;
+        DataValueProvider?.Add(this, dataValue);
         dataValue.Self = Reader?.ReadBytes(window);
         foreach(var node in ChildNodes)
         {
@@ -61,7 +61,7 @@ public class ReadTreeNode
         {
             Name = Name
         };
-        internalDataValue = dataValue;
+        DataValueProvider?.Add(this, dataValue);
         dataValue.Self = Reader?.ReadBytes(window);
         foreach (var node in ChildNodes)
         {

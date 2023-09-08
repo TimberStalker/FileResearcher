@@ -73,7 +73,7 @@ public class UnitTest1
                 }
             }
         };
-
+        IDataValueProvider<ReadTreeNode> valueProvider = new DataValueProvider();
         var readTree = new ReadTreeNode()
         {
             ChildNodes =
