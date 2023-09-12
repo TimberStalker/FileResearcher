@@ -19,7 +19,7 @@ public class ReadTreeNode
     public IByteReader? Reader { get; set; }
 
 
-    IDataValueProvider<ReadTreeNode>? DataValueProvider { get; set; }
+    public IDataValueProvider<ReadTreeNode>? DataValueProvider { get; set; }
 
     public ReadTreeNode()
     {

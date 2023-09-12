@@ -76,33 +76,37 @@ public class UnitTest1
         IDataValueProvider<ReadTreeNode> valueProvider = new DataValueProvider();
         var readTree = new ReadTreeNode()
         {
+            DataValueProvider = valueProvider,
             ChildNodes =
             {
                 new ReadTreeNode("length", out var strLengthNode)
                 {
-                    Reader = new DataTypeReader(int32Type)
+                    DataValueProvider = valueProvider,
+                    Reader = new DataTypeReader(int32Type),
                 },
                 new ReadTreeNode("text1")
                 {
+                    DataValueProvider = valueProvider,
                     Reader = new DataTypeReader(stringType)
                     {
                         Parameters =
                         {
                             { p_StringLength, Expression.FromTreeNode(strLengthNode) }
                         }
-                    }
+                    },
                 },
                 new ReadTreeNode("text2")
                 {
+                    DataValueProvider = valueProvider,
                     Reader = new DataTypeReader(stringType)
                     {
                         Parameters =
                         {
                             { p_StringLength, Expression.FromConstant(int32Type.CreateValue(5)) }
                         }
-                    }
+                    },
                 }
-            }
+            },
         };
 
         var window = new ByteWindow("\x5\0\0\0HelloWorld\0"u8.ToArray());

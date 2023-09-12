@@ -18,7 +18,7 @@ public static class Expression
     {
         return new ConstantExpression(constant);
     }
-    public static IExpression FromTreeNode(ReadTreeNode node) => new TreeSourceExpression(ReadTreePath.CreatePath(node), node.Root.ValueProvider);
+    public static IExpression FromTreeNode(ReadTreeNode node) => new TreeSourceExpression(ReadTreePath.CreatePath(node), node.Root.DataValueProvider?.GetValueProvider(node.Root));
 
     [InterpolatedStringHandler]
     public ref struct ExpressionStringHandler
